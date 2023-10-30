@@ -3,14 +3,17 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { DbService } from 'db/db.service';
-import { SignupDTO, LoginDTO } from 'auth/dto';
 import * as argon from 'argon2';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
+import { DbService } from 'db/db.service';
+import { SignupDTO, LoginDTO } from 'auth/dto';
+
 @Injectable()
 export class AuthService {
-  constructor(private db: DbService) {}
+  constructor(
+    private db: DbService,
+  ) {}
   async signup(dto: SignupDTO) {
     try {
       // generate password hash
