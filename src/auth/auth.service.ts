@@ -1,6 +1,10 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { DbService } from 'db/db.service';
-import { SignupDTO } from 'auth/dto';
+import { SignupDTO, LoginDTO } from 'auth/dto';
 import * as argon from 'argon2';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
@@ -32,7 +36,17 @@ export class AuthService {
     }
   }
 
-  login() {
-    return { message: "I'm logged in" };
+  async login(dto: LoginDTO) {
+    // find the user
+    const user = await this.db.user.findUnique({ where: { email: dto.email } });
+    // user not found
+    if (!user) {
+      throw new NotFoundException('User Does not exist');
+    }
+    // verify the password
+    if (!(await argon.verify(user.password, dto.password))) {
+      throw new BadRequestException('Wrong Password');
+    }
+    return { message: 'Logged In', user };
   }
 }
