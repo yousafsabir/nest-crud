@@ -8,8 +8,8 @@ export class AuthController {
   @Post('signup')
 
   // Validation pipe for a single request
-  signup(@Body(new ValidationPipe()) data: SignupDTO) {
-    return this.authService.signup(data);
+  signup(@Body(new ValidationPipe()) dto: SignupDTO) {
+    return this.authService.signup(dto);
   }
 
   @Post('login')
