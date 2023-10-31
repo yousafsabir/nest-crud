@@ -5,6 +5,8 @@ import {
 } from '@nestjs/common';
 import * as argon from 'argon2';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
+import { JwtService } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
 
 import { DbService } from 'db/db.service';
 import { SignupDTO, LoginDTO } from 'auth/dto';
@@ -13,6 +15,8 @@ import { SignupDTO, LoginDTO } from 'auth/dto';
 export class AuthService {
   constructor(
     private db: DbService,
+    private config: ConfigService,
+    private jwt: JwtService,
   ) {}
   async signup(dto: SignupDTO) {
     try {
@@ -25,8 +29,9 @@ export class AuthService {
           password: passHash,
         },
       });
-      // return saved user
-      return { message: 'Signed Up', user };
+      // return the token
+      const token = await this.generateToken(user.id);
+      return { message: 'Signed Up', token };
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
         if (error.code === 'P2002') {
@@ -50,6 +55,18 @@ export class AuthService {
     if (!(await argon.verify(user.password, dto.password))) {
       throw new BadRequestException('Wrong Password');
     }
-    return { message: 'Logged In', user };
+    // return the token
+    const token = await this.generateToken(user.id);
+    return { message: 'Logged In', token };
+  }
+
+  private generateToken(userId: number) {
+    return this.jwt.signAsync(
+      { sub: userId },
+      {
+        secret: this.config.get('JWT_SECRET'),
+        expiresIn: this.config.get('JWT_EXPIRES_IN'),
+      },
+    );
   }
 }
