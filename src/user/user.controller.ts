@@ -5,6 +5,7 @@ import {
   Param,
   ParseIntPipe,
   UseGuards,
+  Patch,
 } from '@nestjs/common';
 import { User as UserDocument } from '@prisma/client';
 
@@ -17,12 +18,15 @@ import { User } from 'auth/decorator';
 export class UserController {
   constructor(private userService: UserService) {}
   @Get('me')
-  getMe(@User('getUser') user: UserDocument) {
-    return this.userService.getUser(1);
+  getMe(@User('user') user: UserDocument) {
+    return user;
   }
 
   @Get(':id')
   getUser(@Param('id', new ParseIntPipe()) id: number) {
     return this.userService.getUser(id);
   }
+
+  @Patch()
+  updateUser() {}
 }
