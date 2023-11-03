@@ -8,7 +8,7 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 
-import { DbService } from 'db/db.service';
+import { DbService } from 'db.service';
 import { SignupDTO, LoginDTO } from 'auth/dto';
 
 @Injectable()

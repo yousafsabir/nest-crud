@@ -1,23 +1,25 @@
 import {
   Controller,
   Get,
+  Req,
   Param,
   ParseIntPipe,
   UseGuards,
 } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
+import { User as UserDocument } from '@prisma/client';
 
 import { UserService } from 'user/user.service';
+import { JwtGuard } from 'auth/guard';
+import { User } from 'auth/decorator';
 
 @Controller('users')
 export class UserController {
   constructor(private userService: UserService) {}
   @Get('me')
-  @UseGuards(AuthGuard("jwt"))
-  getMe() {
+  @UseGuards(JwtGuard)
+  getMe(@User('getUser') user: UserDocument) {
     return this.userService.getUser(1);
   }
-
 
   @Get(':id')
   getUser(@Param('id', new ParseIntPipe()) id: number) {
