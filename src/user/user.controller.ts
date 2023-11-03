@@ -6,6 +6,7 @@ import {
   ParseIntPipe,
   UseGuards,
   Patch,
+  Delete,
 } from '@nestjs/common';
 import { User as UserDocument } from '@prisma/client';
 
@@ -29,4 +30,9 @@ export class UserController {
 
   @Patch()
   updateUser() {}
+
+  @Delete(':id')
+  deleteUser(@Param('id', new ParseIntPipe()) id: number) {
+    return this.userService.deleteUser(id);
+  }
 }

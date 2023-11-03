@@ -12,4 +12,12 @@ export class UserService {
       },
     });
   }
+
+  async deleteUser(id: number) {
+    return await this.db.user.delete({
+      where: {
+        id,
+      },
+    });
+  }
 }
