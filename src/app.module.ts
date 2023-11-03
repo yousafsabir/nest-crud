@@ -5,6 +5,7 @@ import { validate } from 'env.validation';
 import { AuthModule } from 'auth/auth.module';
 import { UserModule } from 'user/user.module';
 import { DbModule } from 'db.service';
+import { BookmarkModule } from './bookmark/bookmark.module';
 
 @Module({
   imports: [
@@ -13,9 +14,10 @@ import { DbModule } from 'db.service';
       validate,
       isGlobal: true,
     }),
+    DbModule,
     AuthModule,
     UserModule,
-    DbModule,
+    BookmarkModule,
   ]
 })
 export class AppModule {}
