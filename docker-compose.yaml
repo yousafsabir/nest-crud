@@ -9,3 +9,12 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres123
       - POSTGRES_DB=nestjs
+  test-postgres:
+    container_name: nest_crud-test-postgres
+    image: postgres:16
+    ports:
+      - 5433:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres123
+      - POSTGRES_DB=nestjs
