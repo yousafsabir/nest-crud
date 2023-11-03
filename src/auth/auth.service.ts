@@ -31,7 +31,7 @@ export class AuthService {
       });
       // return the token
       const token = await this.generateToken(user.id);
-      return { message: 'Signed Up', token };
+      return { token };
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
         if (error.code === 'P2002') {
@@ -57,7 +57,7 @@ export class AuthService {
     }
     // return the token
     const token = await this.generateToken(user.id);
-    return { message: 'Logged In', token };
+    return { token };
   }
 
   private generateToken(userId: number) {

@@ -13,16 +13,16 @@ import { JwtGuard } from 'auth/guard';
 import { User } from 'auth/decorator';
 
 @Controller('users')
+@UseGuards(JwtGuard)
 export class UserController {
   constructor(private userService: UserService) {}
   @Get('me')
-  @UseGuards(JwtGuard)
   getMe(@User('getUser') user: UserDocument) {
     return this.userService.getUser(1);
   }
 
   @Get(':id')
   getUser(@Param('id', new ParseIntPipe()) id: number) {
-    return this.userService.getUser(1);
+    return this.userService.getUser(id);
   }
 }
