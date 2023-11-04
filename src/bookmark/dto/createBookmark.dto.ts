@@ -18,8 +18,4 @@ export class CreateBookmarkDTO {
   @IsNotEmpty()
   @IsUrl()
   link: string;
-
-  @IsNotEmpty()
-  @IsNumber()
-  userId: number;
 }

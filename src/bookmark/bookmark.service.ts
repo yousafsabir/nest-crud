@@ -7,9 +7,9 @@ import { CreateBookmarkDTO } from 'bookmark/dto';
 export class BookmarkService {
   constructor(private db: DbService) {}
 
-  async createBookmark(dto: CreateBookmarkDTO) {
+  async createBookmark(dto: CreateBookmarkDTO, userId: number) {
     return await this.db.bookmark.create({
-      data: { ...dto },
+      data: { ...dto, userId },
     });
   }
 }
