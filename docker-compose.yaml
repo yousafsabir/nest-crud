@@ -1,0 +1,10 @@
+services:
+  postgres:
+    container_name: nest_drizzle-postgres
+    image: postgres:17.4
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres123
+      - POSTGRES_DB=nestjs
